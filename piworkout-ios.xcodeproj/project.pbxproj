@@ -1,0 +1,830 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2FD99F29ACE0F65DFE2E34AD /* Pods_piworkout_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD1BEBF2EF785FE397E7DF8F /* Pods_piworkout_ios.framework */; };
+		8D8CE61F2B127F620F5F6656 /* Pods_piworkout_ios_piworkout_iosUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87185E7B1CC488B3B533736F /* Pods_piworkout_ios_piworkout_iosUITests.framework */; };
+		BF2CDA6629AF270200354B12 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2CDA6529AF270200354B12 /* SettingsView.swift */; };
+		BF2CDA6829AF317600354B12 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2CDA6729AF317600354B12 /* PlayerView.swift */; };
+		BF937CEB29AFE4E0005DDC17 /* VLCPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF937CEA29AFE4E0005DDC17 /* VLCPlayerController.swift */; };
+		BFC440DB29ABEFF800D0EB58 /* piworkout_iosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC440DA29ABEFF800D0EB58 /* piworkout_iosApp.swift */; };
+		BFC440DD29ABEFF800D0EB58 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC440DC29ABEFF800D0EB58 /* ContentView.swift */; };
+		BFC440DF29ABEFFA00D0EB58 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BFC440DE29ABEFFA00D0EB58 /* Assets.xcassets */; };
+		BFC440E229ABEFFA00D0EB58 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BFC440E129ABEFFA00D0EB58 /* Preview Assets.xcassets */; };
+		BFC440EC29ABEFFA00D0EB58 /* piworkout_iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC440EB29ABEFFA00D0EB58 /* piworkout_iosTests.swift */; };
+		BFC440F629ABEFFA00D0EB58 /* piworkout_iosUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC440F529ABEFFA00D0EB58 /* piworkout_iosUITests.swift */; };
+		BFC440F829ABEFFA00D0EB58 /* piworkout_iosUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC440F729ABEFFA00D0EB58 /* piworkout_iosUITestsLaunchTests.swift */; };
+		BFC4410729AC107A00D0EB58 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFC4410629AC107A00D0EB58 /* AudioToolbox.framework */; };
+		BFC4410929AC108100D0EB58 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFC4410829AC108100D0EB58 /* AVFoundation.framework */; };
+		BFC4410B29AC108700D0EB58 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFC4410A29AC108700D0EB58 /* CFNetwork.framework */; };
+		BFC4410D29AC108F00D0EB58 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFC4410C29AC108F00D0EB58 /* CoreFoundation.framework */; };
+		BFC4410F29AC109500D0EB58 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFC4410E29AC109500D0EB58 /* CoreGraphics.framework */; };
+		BFC4411129AC109B00D0EB58 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFC4411029AC109B00D0EB58 /* CoreMedia.framework */; };
+		BFC4411329AC10A400D0EB58 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFC4411229AC10A400D0EB58 /* CoreText.framework */; };
+		BFC4411529AC10AB00D0EB58 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFC4411429AC10AB00D0EB58 /* CoreVideo.framework */; };
+		BFC4411729AC10BE00D0EB58 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = BFC4411629AC10BE00D0EB58 /* libbz2.tbd */; };
+		BFC4411929AC10D000D0EB58 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = BFC4411829AC10D000D0EB58 /* libc++.tbd */; };
+		BFC4411B29AC10D800D0EB58 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = BFC4411A29AC10D800D0EB58 /* libiconv.tbd */; };
+		BFC4411D29AC10DF00D0EB58 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = BFC4411C29AC10DF00D0EB58 /* libxml2.tbd */; };
+		BFC4411F29AC10EB00D0EB58 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFC4411E29AC10EB00D0EB58 /* OpenGLES.framework */; };
+		BFC4412129AC10F200D0EB58 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFC4412029AC10F200D0EB58 /* QuartzCore.framework */; };
+		BFC4412329AC10F800D0EB58 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFC4412229AC10F800D0EB58 /* Security.framework */; };
+		BFC4412529AC10FD00D0EB58 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFC4412429AC10FD00D0EB58 /* VideoToolbox.framework */; };
+		BFC4412729AC110400D0EB58 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFC4412629AC110400D0EB58 /* UIKit.framework */; };
+		BFC4412929AC118C00D0EB58 /* VLCPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC4412829AC118C00D0EB58 /* VLCPlayerView.swift */; };
+		C04ACEFCAEE68B6221C269CE /* Pods_piworkout_iosTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B83AE2E7A7B470593A1AE009 /* Pods_piworkout_iosTests.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BFC440E829ABEFFA00D0EB58 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFC440CF29ABEFF800D0EB58 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BFC440D629ABEFF800D0EB58;
+			remoteInfo = "piworkout-ios";
+		};
+		BFC440F229ABEFFA00D0EB58 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFC440CF29ABEFF800D0EB58 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BFC440D629ABEFF800D0EB58;
+			remoteInfo = "piworkout-ios";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		07A830434AD5E4F22ACCCB24 /* Pods-piworkout-iosTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-piworkout-iosTests.release.xcconfig"; path = "Target Support Files/Pods-piworkout-iosTests/Pods-piworkout-iosTests.release.xcconfig"; sourceTree = "<group>"; };
+		39B380901977E2AC394ABFA1 /* Pods-piworkout-ios-piworkout-iosUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-piworkout-ios-piworkout-iosUITests.release.xcconfig"; path = "Target Support Files/Pods-piworkout-ios-piworkout-iosUITests/Pods-piworkout-ios-piworkout-iosUITests.release.xcconfig"; sourceTree = "<group>"; };
+		631296DE442F41058E175EBE /* Pods-piworkout-iosTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-piworkout-iosTests.debug.xcconfig"; path = "Target Support Files/Pods-piworkout-iosTests/Pods-piworkout-iosTests.debug.xcconfig"; sourceTree = "<group>"; };
+		852422922BCC81E04EC50EBC /* Pods-piworkout-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-piworkout-ios.release.xcconfig"; path = "Target Support Files/Pods-piworkout-ios/Pods-piworkout-ios.release.xcconfig"; sourceTree = "<group>"; };
+		87185E7B1CC488B3B533736F /* Pods_piworkout_ios_piworkout_iosUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_piworkout_ios_piworkout_iosUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		930B0209EBB4A79816140001 /* Pods-piworkout-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-piworkout-ios.debug.xcconfig"; path = "Target Support Files/Pods-piworkout-ios/Pods-piworkout-ios.debug.xcconfig"; sourceTree = "<group>"; };
+		B83AE2E7A7B470593A1AE009 /* Pods_piworkout_iosTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_piworkout_iosTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD1BEBF2EF785FE397E7DF8F /* Pods_piworkout_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_piworkout_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF2CDA6529AF270200354B12 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		BF2CDA6729AF317600354B12 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
+		BF937CEA29AFE4E0005DDC17 /* VLCPlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VLCPlayerController.swift; sourceTree = "<group>"; };
+		BFC440D729ABEFF800D0EB58 /* piworkout-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "piworkout-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BFC440DA29ABEFF800D0EB58 /* piworkout_iosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = piworkout_iosApp.swift; sourceTree = "<group>"; };
+		BFC440DC29ABEFF800D0EB58 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		BFC440DE29ABEFFA00D0EB58 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BFC440E129ABEFFA00D0EB58 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		BFC440E729ABEFFA00D0EB58 /* piworkout-iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "piworkout-iosTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BFC440EB29ABEFFA00D0EB58 /* piworkout_iosTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = piworkout_iosTests.swift; sourceTree = "<group>"; };
+		BFC440F129ABEFFA00D0EB58 /* piworkout-iosUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "piworkout-iosUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BFC440F529ABEFFA00D0EB58 /* piworkout_iosUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = piworkout_iosUITests.swift; sourceTree = "<group>"; };
+		BFC440F729ABEFFA00D0EB58 /* piworkout_iosUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = piworkout_iosUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		BFC4410629AC107A00D0EB58 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		BFC4410829AC108100D0EB58 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		BFC4410A29AC108700D0EB58 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		BFC4410C29AC108F00D0EB58 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		BFC4410E29AC109500D0EB58 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		BFC4411029AC109B00D0EB58 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		BFC4411229AC10A400D0EB58 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		BFC4411429AC10AB00D0EB58 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		BFC4411629AC10BE00D0EB58 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
+		BFC4411829AC10D000D0EB58 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		BFC4411A29AC10D800D0EB58 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
+		BFC4411C29AC10DF00D0EB58 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
+		BFC4411E29AC10EB00D0EB58 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		BFC4412029AC10F200D0EB58 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		BFC4412229AC10F800D0EB58 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		BFC4412429AC10FD00D0EB58 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
+		BFC4412629AC110400D0EB58 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		BFC4412829AC118C00D0EB58 /* VLCPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VLCPlayerView.swift; sourceTree = "<group>"; };
+		D8120575232FE78D86A167FE /* Pods-piworkout-ios-piworkout-iosUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-piworkout-ios-piworkout-iosUITests.debug.xcconfig"; path = "Target Support Files/Pods-piworkout-ios-piworkout-iosUITests/Pods-piworkout-ios-piworkout-iosUITests.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BFC440D429ABEFF800D0EB58 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BFC4412729AC110400D0EB58 /* UIKit.framework in Frameworks */,
+				BFC4412529AC10FD00D0EB58 /* VideoToolbox.framework in Frameworks */,
+				BFC4412329AC10F800D0EB58 /* Security.framework in Frameworks */,
+				BFC4412129AC10F200D0EB58 /* QuartzCore.framework in Frameworks */,
+				BFC4411F29AC10EB00D0EB58 /* OpenGLES.framework in Frameworks */,
+				BFC4411D29AC10DF00D0EB58 /* libxml2.tbd in Frameworks */,
+				BFC4411B29AC10D800D0EB58 /* libiconv.tbd in Frameworks */,
+				BFC4411929AC10D000D0EB58 /* libc++.tbd in Frameworks */,
+				BFC4411729AC10BE00D0EB58 /* libbz2.tbd in Frameworks */,
+				BFC4411529AC10AB00D0EB58 /* CoreVideo.framework in Frameworks */,
+				BFC4411329AC10A400D0EB58 /* CoreText.framework in Frameworks */,
+				BFC4411129AC109B00D0EB58 /* CoreMedia.framework in Frameworks */,
+				BFC4410F29AC109500D0EB58 /* CoreGraphics.framework in Frameworks */,
+				BFC4410D29AC108F00D0EB58 /* CoreFoundation.framework in Frameworks */,
+				BFC4410B29AC108700D0EB58 /* CFNetwork.framework in Frameworks */,
+				BFC4410929AC108100D0EB58 /* AVFoundation.framework in Frameworks */,
+				BFC4410729AC107A00D0EB58 /* AudioToolbox.framework in Frameworks */,
+				2FD99F29ACE0F65DFE2E34AD /* Pods_piworkout_ios.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BFC440E429ABEFFA00D0EB58 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C04ACEFCAEE68B6221C269CE /* Pods_piworkout_iosTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BFC440EE29ABEFFA00D0EB58 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D8CE61F2B127F620F5F6656 /* Pods_piworkout_ios_piworkout_iosUITests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		48A629E23B8370F046800930 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BFC4412629AC110400D0EB58 /* UIKit.framework */,
+				BFC4412429AC10FD00D0EB58 /* VideoToolbox.framework */,
+				BFC4412229AC10F800D0EB58 /* Security.framework */,
+				BFC4412029AC10F200D0EB58 /* QuartzCore.framework */,
+				BFC4411E29AC10EB00D0EB58 /* OpenGLES.framework */,
+				BFC4411C29AC10DF00D0EB58 /* libxml2.tbd */,
+				BFC4411A29AC10D800D0EB58 /* libiconv.tbd */,
+				BFC4411829AC10D000D0EB58 /* libc++.tbd */,
+				BFC4411629AC10BE00D0EB58 /* libbz2.tbd */,
+				BFC4411429AC10AB00D0EB58 /* CoreVideo.framework */,
+				BFC4411229AC10A400D0EB58 /* CoreText.framework */,
+				BFC4411029AC109B00D0EB58 /* CoreMedia.framework */,
+				BFC4410E29AC109500D0EB58 /* CoreGraphics.framework */,
+				BFC4410C29AC108F00D0EB58 /* CoreFoundation.framework */,
+				BFC4410A29AC108700D0EB58 /* CFNetwork.framework */,
+				BFC4410829AC108100D0EB58 /* AVFoundation.framework */,
+				BFC4410629AC107A00D0EB58 /* AudioToolbox.framework */,
+				BD1BEBF2EF785FE397E7DF8F /* Pods_piworkout_ios.framework */,
+				87185E7B1CC488B3B533736F /* Pods_piworkout_ios_piworkout_iosUITests.framework */,
+				B83AE2E7A7B470593A1AE009 /* Pods_piworkout_iosTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		759E5C5687F70E7202FC2ED8 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				930B0209EBB4A79816140001 /* Pods-piworkout-ios.debug.xcconfig */,
+				852422922BCC81E04EC50EBC /* Pods-piworkout-ios.release.xcconfig */,
+				D8120575232FE78D86A167FE /* Pods-piworkout-ios-piworkout-iosUITests.debug.xcconfig */,
+				39B380901977E2AC394ABFA1 /* Pods-piworkout-ios-piworkout-iosUITests.release.xcconfig */,
+				631296DE442F41058E175EBE /* Pods-piworkout-iosTests.debug.xcconfig */,
+				07A830434AD5E4F22ACCCB24 /* Pods-piworkout-iosTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		BFC440CE29ABEFF800D0EB58 = {
+			isa = PBXGroup;
+			children = (
+				BFC440D929ABEFF800D0EB58 /* piworkout-ios */,
+				BFC440EA29ABEFFA00D0EB58 /* piworkout-iosTests */,
+				BFC440F429ABEFFA00D0EB58 /* piworkout-iosUITests */,
+				BFC440D829ABEFF800D0EB58 /* Products */,
+				759E5C5687F70E7202FC2ED8 /* Pods */,
+				48A629E23B8370F046800930 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		BFC440D829ABEFF800D0EB58 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BFC440D729ABEFF800D0EB58 /* piworkout-ios.app */,
+				BFC440E729ABEFFA00D0EB58 /* piworkout-iosTests.xctest */,
+				BFC440F129ABEFFA00D0EB58 /* piworkout-iosUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BFC440D929ABEFF800D0EB58 /* piworkout-ios */ = {
+			isa = PBXGroup;
+			children = (
+				BFC440DA29ABEFF800D0EB58 /* piworkout_iosApp.swift */,
+				BFC440DC29ABEFF800D0EB58 /* ContentView.swift */,
+				BFC440DE29ABEFFA00D0EB58 /* Assets.xcassets */,
+				BFC440E029ABEFFA00D0EB58 /* Preview Content */,
+				BFC4412829AC118C00D0EB58 /* VLCPlayerView.swift */,
+				BF2CDA6529AF270200354B12 /* SettingsView.swift */,
+				BF2CDA6729AF317600354B12 /* PlayerView.swift */,
+				BF937CEA29AFE4E0005DDC17 /* VLCPlayerController.swift */,
+			);
+			path = "piworkout-ios";
+			sourceTree = "<group>";
+		};
+		BFC440E029ABEFFA00D0EB58 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				BFC440E129ABEFFA00D0EB58 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		BFC440EA29ABEFFA00D0EB58 /* piworkout-iosTests */ = {
+			isa = PBXGroup;
+			children = (
+				BFC440EB29ABEFFA00D0EB58 /* piworkout_iosTests.swift */,
+			);
+			path = "piworkout-iosTests";
+			sourceTree = "<group>";
+		};
+		BFC440F429ABEFFA00D0EB58 /* piworkout-iosUITests */ = {
+			isa = PBXGroup;
+			children = (
+				BFC440F529ABEFFA00D0EB58 /* piworkout_iosUITests.swift */,
+				BFC440F729ABEFFA00D0EB58 /* piworkout_iosUITestsLaunchTests.swift */,
+			);
+			path = "piworkout-iosUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BFC440D629ABEFF800D0EB58 /* piworkout-ios */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BFC440FB29ABEFFA00D0EB58 /* Build configuration list for PBXNativeTarget "piworkout-ios" */;
+			buildPhases = (
+				C9A2D8AC2D99969478680B6A /* [CP] Check Pods Manifest.lock */,
+				BFC440D329ABEFF800D0EB58 /* Sources */,
+				BFC440D429ABEFF800D0EB58 /* Frameworks */,
+				BFC440D529ABEFF800D0EB58 /* Resources */,
+				13F630A6A98925E66F7F996F /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "piworkout-ios";
+			productName = "piworkout-ios";
+			productReference = BFC440D729ABEFF800D0EB58 /* piworkout-ios.app */;
+			productType = "com.apple.product-type.application";
+		};
+		BFC440E629ABEFFA00D0EB58 /* piworkout-iosTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BFC440FE29ABEFFA00D0EB58 /* Build configuration list for PBXNativeTarget "piworkout-iosTests" */;
+			buildPhases = (
+				F896C2F4357374EDDADAA8CA /* [CP] Check Pods Manifest.lock */,
+				BFC440E329ABEFFA00D0EB58 /* Sources */,
+				BFC440E429ABEFFA00D0EB58 /* Frameworks */,
+				BFC440E529ABEFFA00D0EB58 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BFC440E929ABEFFA00D0EB58 /* PBXTargetDependency */,
+			);
+			name = "piworkout-iosTests";
+			productName = "piworkout-iosTests";
+			productReference = BFC440E729ABEFFA00D0EB58 /* piworkout-iosTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		BFC440F029ABEFFA00D0EB58 /* piworkout-iosUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BFC4410129ABEFFA00D0EB58 /* Build configuration list for PBXNativeTarget "piworkout-iosUITests" */;
+			buildPhases = (
+				CDBE75FC8BB650F44ED1EF1C /* [CP] Check Pods Manifest.lock */,
+				BFC440ED29ABEFFA00D0EB58 /* Sources */,
+				BFC440EE29ABEFFA00D0EB58 /* Frameworks */,
+				BFC440EF29ABEFFA00D0EB58 /* Resources */,
+				DF9C412965054EC039C53C1F /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BFC440F329ABEFFA00D0EB58 /* PBXTargetDependency */,
+			);
+			name = "piworkout-iosUITests";
+			productName = "piworkout-iosUITests";
+			productReference = BFC440F129ABEFFA00D0EB58 /* piworkout-iosUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BFC440CF29ABEFF800D0EB58 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1420;
+				LastUpgradeCheck = 1420;
+				TargetAttributes = {
+					BFC440D629ABEFF800D0EB58 = {
+						CreatedOnToolsVersion = 14.2;
+					};
+					BFC440E629ABEFFA00D0EB58 = {
+						CreatedOnToolsVersion = 14.2;
+						TestTargetID = BFC440D629ABEFF800D0EB58;
+					};
+					BFC440F029ABEFFA00D0EB58 = {
+						CreatedOnToolsVersion = 14.2;
+						TestTargetID = BFC440D629ABEFF800D0EB58;
+					};
+				};
+			};
+			buildConfigurationList = BFC440D229ABEFF800D0EB58 /* Build configuration list for PBXProject "piworkout-ios" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = BFC440CE29ABEFF800D0EB58;
+			productRefGroup = BFC440D829ABEFF800D0EB58 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BFC440D629ABEFF800D0EB58 /* piworkout-ios */,
+				BFC440E629ABEFFA00D0EB58 /* piworkout-iosTests */,
+				BFC440F029ABEFFA00D0EB58 /* piworkout-iosUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BFC440D529ABEFF800D0EB58 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BFC440E229ABEFFA00D0EB58 /* Preview Assets.xcassets in Resources */,
+				BFC440DF29ABEFFA00D0EB58 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BFC440E529ABEFFA00D0EB58 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BFC440EF29ABEFFA00D0EB58 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		13F630A6A98925E66F7F996F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-piworkout-ios/Pods-piworkout-ios-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-piworkout-ios/Pods-piworkout-ios-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-piworkout-ios/Pods-piworkout-ios-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C9A2D8AC2D99969478680B6A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-piworkout-ios-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CDBE75FC8BB650F44ED1EF1C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-piworkout-ios-piworkout-iosUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DF9C412965054EC039C53C1F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-piworkout-ios-piworkout-iosUITests/Pods-piworkout-ios-piworkout-iosUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-piworkout-ios-piworkout-iosUITests/Pods-piworkout-ios-piworkout-iosUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-piworkout-ios-piworkout-iosUITests/Pods-piworkout-ios-piworkout-iosUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F896C2F4357374EDDADAA8CA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-piworkout-iosTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BFC440D329ABEFF800D0EB58 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF2CDA6629AF270200354B12 /* SettingsView.swift in Sources */,
+				BFC4412929AC118C00D0EB58 /* VLCPlayerView.swift in Sources */,
+				BF937CEB29AFE4E0005DDC17 /* VLCPlayerController.swift in Sources */,
+				BFC440DD29ABEFF800D0EB58 /* ContentView.swift in Sources */,
+				BF2CDA6829AF317600354B12 /* PlayerView.swift in Sources */,
+				BFC440DB29ABEFF800D0EB58 /* piworkout_iosApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BFC440E329ABEFFA00D0EB58 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BFC440EC29ABEFFA00D0EB58 /* piworkout_iosTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BFC440ED29ABEFFA00D0EB58 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BFC440F629ABEFFA00D0EB58 /* piworkout_iosUITests.swift in Sources */,
+				BFC440F829ABEFFA00D0EB58 /* piworkout_iosUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BFC440E929ABEFFA00D0EB58 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BFC440D629ABEFF800D0EB58 /* piworkout-ios */;
+			targetProxy = BFC440E829ABEFFA00D0EB58 /* PBXContainerItemProxy */;
+		};
+		BFC440F329ABEFFA00D0EB58 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BFC440D629ABEFF800D0EB58 /* piworkout-ios */;
+			targetProxy = BFC440F229ABEFFA00D0EB58 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		BFC440F929ABEFFA00D0EB58 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		BFC440FA29ABEFFA00D0EB58 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BFC440FC29ABEFFA00D0EB58 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 930B0209EBB4A79816140001 /* Pods-piworkout-ios.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"piworkout-ios/Preview Content\"";
+				DEVELOPMENT_TEAM = 9B24HLYWWV;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "piWorkout iOS";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bcartfall.piworkout-ios";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BFC440FD29ABEFFA00D0EB58 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 852422922BCC81E04EC50EBC /* Pods-piworkout-ios.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"piworkout-ios/Preview Content\"";
+				DEVELOPMENT_TEAM = 9B24HLYWWV;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "piWorkout iOS";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bcartfall.piworkout-ios";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		BFC440FF29ABEFFA00D0EB58 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 631296DE442F41058E175EBE /* Pods-piworkout-iosTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9B24HLYWWV;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bcartfall.piworkout-iosTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/piworkout-ios.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/piworkout-ios";
+			};
+			name = Debug;
+		};
+		BFC4410029ABEFFA00D0EB58 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 07A830434AD5E4F22ACCCB24 /* Pods-piworkout-iosTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9B24HLYWWV;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bcartfall.piworkout-iosTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/piworkout-ios.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/piworkout-ios";
+			};
+			name = Release;
+		};
+		BFC4410229ABEFFA00D0EB58 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D8120575232FE78D86A167FE /* Pods-piworkout-ios-piworkout-iosUITests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9B24HLYWWV;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bcartfall.piworkout-iosUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "piworkout-ios";
+			};
+			name = Debug;
+		};
+		BFC4410329ABEFFA00D0EB58 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 39B380901977E2AC394ABFA1 /* Pods-piworkout-ios-piworkout-iosUITests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9B24HLYWWV;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bcartfall.piworkout-iosUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "piworkout-ios";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BFC440D229ABEFF800D0EB58 /* Build configuration list for PBXProject "piworkout-ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BFC440F929ABEFFA00D0EB58 /* Debug */,
+				BFC440FA29ABEFFA00D0EB58 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BFC440FB29ABEFFA00D0EB58 /* Build configuration list for PBXNativeTarget "piworkout-ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BFC440FC29ABEFFA00D0EB58 /* Debug */,
+				BFC440FD29ABEFFA00D0EB58 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BFC440FE29ABEFFA00D0EB58 /* Build configuration list for PBXNativeTarget "piworkout-iosTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BFC440FF29ABEFFA00D0EB58 /* Debug */,
+				BFC4410029ABEFFA00D0EB58 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BFC4410129ABEFFA00D0EB58 /* Build configuration list for PBXNativeTarget "piworkout-iosUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BFC4410229ABEFFA00D0EB58 /* Debug */,
+				BFC4410329ABEFFA00D0EB58 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BFC440CF29ABEFF800D0EB58 /* Project object */;
+}

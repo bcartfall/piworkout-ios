@@ -1,0 +1,409 @@
+//
+//  VLCPlayerController.swift
+//  piworkout-ios
+//
+//  Created by Bryan on 2023-03-01.
+//
+
+import SwiftUI
+import MobileVLCKit
+
+class VLCPLayerController: ObservableObject {
+    @Published var showSettingsView = false
+    @Published var connected = false
+    
+    @AppStorage("serverHost") private var serverHost = ""
+    @AppStorage("muted") private var muted = true
+    @AppStorage("videoQuality") private var videoQuality = "4K"
+    let player: VLCMediaPlayer = VLCMediaPlayer()
+    enum Orientation {
+        case portrait
+        case landscape
+    }
+    private var orientation: Orientation
+    private var _observer: NSObjectProtocol?
+    
+    /// Variables to manage playback and videos from server
+    private var webSocket: URLSessionWebSocketTask?
+    private var videos: [VideoData] = []
+    private var pingStart: Double = 0
+    private var serverLatency: Int = 0
+    public var currentVideo: VideoData?
+    private var diffSyncWait: Double = 0
+    private var playbackSpeed: Float = 1
+    private var diffQueue: [Int] = []
+
+    init() {
+        // determine orientation
+        let w = UIScreen.main.bounds.size.width
+        let h = UIScreen.main.bounds.size.height
+        if (w > h) {
+            orientation = .landscape
+        } else {
+            orientation = .portrait
+        }
+        setup()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setup() {
+        print("Setup")
+                
+        _observer = NotificationCenter.default.addObserver(forName: UIDevice.orientationDidChangeNotification, object: nil, queue: nil) { [unowned self] note in
+            guard let device = note.object as? UIDevice else {
+                return
+            }
+            if device.orientation.isPortrait {
+                self.orientation = .portrait
+            } else if device.orientation.isLandscape {
+                self.orientation = .landscape
+            }
+            self.setScale()
+        }
+        
+        self.setScale()
+                
+        // open websocket
+        self.openWebSocket()
+    }
+    
+    deinit {
+        if let observer = _observer {
+            NotificationCenter.default.removeObserver(observer)
+        }
+    }
+    
+    func play() {
+        player.play()
+        if (muted) {
+            player.audio.volume = 0
+        }
+    }
+    
+    func stop() {
+        player.stop()
+    }
+    
+    func setScale() {
+        if (orientation == .landscape) {
+            player.scaleFactor = 1
+        } else {
+            player.scaleFactor = 1.35 // aprox 4:3 on device screen
+        }
+    }
+    
+    func showSettings() {
+        currentVideo = nil
+        connected = false
+        player.stop()
+        webSocket?.suspend()
+        showSettingsView = true
+    }
+
+    /// Open a new websocket and wait for messages from server
+    func openWebSocket() {
+        print("openWebSocket serverHost=" + serverHost + ", muted=" + String(muted))
+        if (serverHost == "") {
+            return
+        }
+        let urlString = "ws://" + serverHost + "/backend"
+        if let url = URL(string: urlString) {
+            let request = URLRequest(url: url)
+            let session = URLSession(configuration: .default, delegate: nil, delegateQueue: nil)
+            let webSocket = session.webSocketTask(with: request)
+            self.webSocket = webSocket
+            webSocket.resume()
+            connected = true
+            
+            let timer = Timer.scheduledTimer(withTimeInterval: 60.0, repeats: true) { [weak self] timer in
+                self?.sendPing()
+            }
+            timer.fire()
+            
+            receiveMessage()
+        }
+    }
+    
+    func receiveMessage() {
+        webSocket?.receive(completionHandler: { [weak self] result in
+            
+            switch result {
+            case .failure(let error):
+                print(error.localizedDescription)
+            case .success(let message):
+                switch message {
+                case .string(let messageString):
+                    self?.handleMessage(messageString: messageString)
+                case .data(let data):
+                    print(data.description)
+                default:
+                    print("Unknown type received from WebSocket")
+                }
+            }
+            self?.receiveMessage()
+        })
+    }
+    
+    func handleMessage(messageString: String) {
+        let decoder = JSONDecoder()
+        do {
+            let nsMessage = try decoder.decode(NamespaceMessage.self, from: messageString.data(using: .utf8)!)
+            
+            //print("handleMessage() " + nsMessage.namespace)
+            switch (nsMessage.namespace) {
+            case "init": return self.handleInit(messageString: messageString)
+            case "ping": return self.handlePing(messageString: messageString)
+            case "videos": return self.handleVideos(messageString: messageString)
+            case "player": return self.handlePlayer(messageString: messageString)
+            default:
+                print("namespace not handled.")
+            }
+        } catch {
+            print(error)
+        }
+    }
+    
+    func handleInit(messageString: String) {
+        let decoder = JSONDecoder()
+        do {
+            let initMessage = try decoder.decode(InitMessage.self, from: messageString.data(using: .utf8)!)
+            
+            self.videos = initMessage.data.videos
+            sendPing()
+        } catch {
+            print(error)
+        }
+    }
+    
+    func sendPing() {
+        pingStart = CACurrentMediaTime()
+        print("Sending ping " + String(pingStart))
+        let uuid = UUID().uuidString
+        webSocket?.send(URLSessionWebSocketTask.Message.string("{\"namespace\": \"ping\", \"uuid\": \"" + uuid + "\"}")) { [weak self] error in
+            if let error = error {
+                print("Failed with Error \(error.localizedDescription)")
+            } else {
+                // no-op
+            }
+        }
+    }
+    
+    func handlePing(messageString: String) {
+        serverLatency = Int(round((CACurrentMediaTime() - pingStart) * 1000))
+        print("handlePing() latency=" + String(serverLatency))
+    }
+    
+    func handleVideos(messageString: String) {
+        do {
+            let decoder = JSONDecoder()
+            let videosMessage = try decoder.decode(VideosMessage.self, from: messageString.data(using: .utf8)!)
+            videos = videosMessage.videos
+        } catch {
+            print(error)
+        }
+    }
+    
+    func getVideoById(id: Int) -> VideoData?
+    {
+        for (_, video) in videos.enumerated() {
+            if (video.id == id) {
+                return video
+            }
+        }
+        return nil
+    }
+    
+    func handlePlayer(messageString: String) {
+        do {
+            let decoder = JSONDecoder()
+            let playerMessage = try decoder.decode(PlayerMessage.self, from: messageString.data(using: .utf8)!)
+            
+            let status = playerMessage.player.status
+            let action = playerMessage.player.action
+            let pId = playerMessage.player.videoId
+            let serverTime = Int(round(playerMessage.player.time * 1000)) + serverLatency
+            
+            if (status == Status.PLAYING.rawValue) {
+                if (currentVideo == nil || currentVideo?.id != playerMessage.player.videoId) {
+                    // change video
+                    let video = getVideoById(id: pId)
+                    if (video == nil) {
+                        return
+                    }
+                    currentVideo = video
+                    
+                    var format: String
+                    var maxSupportedHeight: Int
+                    if (videoQuality == "4K") {
+                        maxSupportedHeight = 2160
+                    } else if (videoQuality == "1440p") {
+                        maxSupportedHeight = 1440
+                    } else if (videoQuality == "1080p") {
+                        maxSupportedHeight = 1080
+                    } else {
+                        maxSupportedHeight = 720
+                    }
+                    
+                    let height = video!.height
+                    if (height >= 2160 && maxSupportedHeight > 1440) {
+                        format = "4K"
+                    } else if (height >= 1440 && maxSupportedHeight > 1080) {
+                        format = "1440p"
+                    } else if (height >= 1080 && maxSupportedHeight > 720) {
+                        format = "1080p"
+                    } else {
+                        format = "720p"
+                    }
+                    
+                    let filename = video!.filename
+                    
+                    let url: String = "http://" + serverHost + "/videos/" + String(pId) + "-" + format + "-" + filename
+                    
+                    print("handlePlayer() playing video " + url + " at serverTime=" + String(serverTime) + ", duration=" + String(video!.duration))
+                 
+                    let media = VLCMedia(url: URL(string: url)!)
+                    player.media = media
+                    
+                    player.play()
+                    if (muted) {
+                        print("Muting audio")
+                        player.audio.volume = 0
+                    } else {
+                        print("Not muted")
+                        player.audio.volume = 100
+                    }
+                    player.time = VLCTime(int: Int32(serverTime + 1000))
+                    
+                    // must wait 2.5 before trying to catch up
+                    diffSyncWait = CACurrentMediaTime() + 2.5
+                } else if (action == "progress") {
+                    let currentTime = player.time
+                    //let totalTime = player.media.length
+                    
+                    let clientTime = Int(currentTime!.intValue)
+                    let cDiff = serverTime - clientTime
+                    
+                    let now = CACurrentMediaTime()
+                    let minDiff: Int = 0
+                    let maxDiff: Int = 100
+                    
+                    if (now >= diffSyncWait) {
+                        let count = diffQueue.count
+                        diffQueue.append(cDiff)
+                        if (diffQueue.count > 9) {
+                            diffQueue.removeFirst()
+                        }
+                        
+                        var aDiff = cDiff
+                        if (count > 0) {
+                            aDiff = diffQueue.reduce(0, +) / count
+                        }
+                        
+                        if (aDiff <= minDiff || aDiff >= maxDiff) {
+                            if (cDiff < minDiff) {
+                                // slow player
+                                let base: Int = min(-cDiff + minDiff, 1000 + minDiff)
+                                let quotient: Int = 1000 + minDiff
+                                playbackSpeed = 1.0 - (Float(base) / Float(quotient) * 0.25)
+                                print("handlePlayer() out of sync, client is ahead, setting playbackSpeed=" + String(playbackSpeed))
+                            } else if (cDiff > maxDiff) {
+                                // increase
+                                let base: Int = min(cDiff + maxDiff, 1000 + maxDiff)
+                                let quotient: Int = 1000 + maxDiff
+                                playbackSpeed = 1.0 + (Float(base) / Float(quotient) * 0.25)
+                                print("handlePlayer() out of sync, server is ahead, setting playbackSpeed=" + String(playbackSpeed))
+                            }
+                            
+                            player.rate = playbackSpeed
+                        } else {
+                            if (playbackSpeed != 1.0) {
+                                playbackSpeed = 1.0;
+                                player.rate = playbackSpeed
+                            }
+                        }
+                        
+                        print("handlePlayer() clientTime=" + String(clientTime) + ", serverTime=" + String(serverTime) + ", cDiff=" + String(cDiff) + ", aDiff=" + String(aDiff))
+                    }
+                    
+                } else if (action == "seek") {
+                    diffSyncWait = CACurrentMediaTime() + 2.5
+                    player.time = VLCTime(int: Int32(serverTime + 500))
+                    diffQueue = []
+                } else if (action == "play") {
+                    player.play()
+                }
+            } else {
+                // pause video
+                player.pause()
+            }
+            
+        } catch {
+            print(error)
+        }
+    }
+}
+
+/// Current Video Player State
+enum Status: Int {
+    case STOPPED = 1
+    case PAUSED = 2
+    case PLAYING = 3
+    case ENDED = 4
+}
+
+/// Data for JSON from WebSocket
+struct NamespaceMessage: Codable {
+    let namespace: String
+}
+
+struct InitMessage: Codable {
+    let data: InitData
+}
+
+struct InitData: Codable {
+    let connected: Bool
+    let videos: [VideoData]
+}
+
+struct VideoData: Codable {
+    let id: Int
+    let order: Int
+    let videoId: String
+    let source: String
+    let url: String
+    let filename: String
+    let filesize: Int64
+    let title: String
+    let description: String
+    let duration: Int
+    let position: Float
+    let width: Int
+    let height: Int
+    let tbr: Int
+    let fps: Int
+    let vcodec: String
+    let status: Int
+}
+
+struct PingMessage: Codable {
+    let uuid: String
+}
+
+struct VideosMessage: Codable {
+    let videos: [VideoData]
+}
+
+struct PlayerMessage: Codable {
+    let player: PlayerData
+}
+
+struct PlayerData: Codable {
+    let time: Float
+    let videoId: Int
+    let status: Int
+    let client: String
+    let action: String
+}
