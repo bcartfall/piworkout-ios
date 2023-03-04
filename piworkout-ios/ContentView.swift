@@ -9,6 +9,7 @@ import SwiftUI
 
 
 struct ContentView: View {
+    @Environment(\.scenePhase) var scenePhase
     @StateObject var playerController: VLCPLayerController = VLCPLayerController()
     
     var body: some View {
@@ -19,6 +20,15 @@ struct ContentView: View {
             }
             .onLongPressGesture {
                 playerController.showSettings()
+            }
+            .onDisappear {
+                playerController.release()
+            }.onChange(of: scenePhase) { newPhase in
+                if newPhase == .active {
+                    playerController.setup()
+                } else {
+                    playerController.release()
+                }
             }
         }
         .environmentObject(playerController)

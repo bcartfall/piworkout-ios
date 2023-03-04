@@ -32,6 +32,8 @@ class VLCPLayerController: ObservableObject {
     private var diffSyncWait: Double = 0
     private var playbackSpeed: Float = 1
     private var diffQueue: [Int] = []
+    public var isLoadingFirstFrame = false
+    private var status: Int = -1
 
     init() {
         // determine orientation
@@ -42,6 +44,7 @@ class VLCPLayerController: ObservableObject {
         } else {
             orientation = .portrait
         }
+        
         setup()
     }
     
@@ -51,6 +54,9 @@ class VLCPLayerController: ObservableObject {
     
     func setup() {
         print("Setup")
+        if (connected) {
+            return
+        }
                 
         _observer = NotificationCenter.default.addObserver(forName: UIDevice.orientationDidChangeNotification, object: nil, queue: nil) { [unowned self] note in
             guard let device = note.object as? UIDevice else {
@@ -63,9 +69,7 @@ class VLCPLayerController: ObservableObject {
             }
             self.setScale()
         }
-        
-        self.setScale()
-                
+                        
         // open websocket
         self.openWebSocket()
     }
@@ -79,7 +83,11 @@ class VLCPLayerController: ObservableObject {
     func play() {
         player.play()
         if (muted) {
+            print("Muting audio")
             player.audio.volume = 0
+        } else {
+            print("Not muted")
+            player.audio.volume = 100
         }
     }
     
@@ -88,19 +96,28 @@ class VLCPLayerController: ObservableObject {
     }
     
     func setScale() {
-        if (orientation == .landscape) {
-            player.scaleFactor = 1
-        } else {
-            player.scaleFactor = 1.35 // aprox 4:3 on device screen
+        if (currentVideo == nil) {
+            player.scaleFactor = 0
+            return
         }
+        
+        // fill space
+        player.scaleFactor = 0
     }
     
     func showSettings() {
+        release()
+        showSettingsView = true
+    }
+    
+    /// free resources
+    func release() {
+        print("release")
         currentVideo = nil
         connected = false
         player.stop()
         webSocket?.suspend()
-        showSettingsView = true
+        webSocket = nil
     }
 
     /// Open a new websocket and wait for messages from server
@@ -118,7 +135,7 @@ class VLCPLayerController: ObservableObject {
             webSocket.resume()
             connected = true
             
-            let timer = Timer.scheduledTimer(withTimeInterval: 60.0, repeats: true) { [weak self] timer in
+            let timer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) { [weak self] timer in
                 self?.sendPing()
             }
             timer.fire()
@@ -172,6 +189,7 @@ class VLCPLayerController: ObservableObject {
             let initMessage = try decoder.decode(InitMessage.self, from: messageString.data(using: .utf8)!)
             
             self.videos = initMessage.data.videos
+            actionPlayerData(playerData: initMessage.data.player)
             sendPing()
         } catch {
             print(error)
@@ -220,128 +238,143 @@ class VLCPLayerController: ObservableObject {
         do {
             let decoder = JSONDecoder()
             let playerMessage = try decoder.decode(PlayerMessage.self, from: messageString.data(using: .utf8)!)
-            
-            let status = playerMessage.player.status
-            let action = playerMessage.player.action
-            let pId = playerMessage.player.videoId
-            let serverTime = Int(round(playerMessage.player.time * 1000)) + serverLatency
-            
-            if (status == Status.PLAYING.rawValue) {
-                if (currentVideo == nil || currentVideo?.id != playerMessage.player.videoId) {
-                    // change video
-                    let video = getVideoById(id: pId)
-                    if (video == nil) {
-                        return
-                    }
-                    currentVideo = video
-                    
-                    var format: String
-                    var maxSupportedHeight: Int
-                    if (videoQuality == "4K") {
-                        maxSupportedHeight = 2160
-                    } else if (videoQuality == "1440p") {
-                        maxSupportedHeight = 1440
-                    } else if (videoQuality == "1080p") {
-                        maxSupportedHeight = 1080
-                    } else {
-                        maxSupportedHeight = 720
-                    }
-                    
-                    let height = video!.height
-                    if (height >= 2160 && maxSupportedHeight > 1440) {
-                        format = "4K"
-                    } else if (height >= 1440 && maxSupportedHeight > 1080) {
-                        format = "1440p"
-                    } else if (height >= 1080 && maxSupportedHeight > 720) {
-                        format = "1080p"
-                    } else {
-                        format = "720p"
-                    }
-                    
-                    let filename = video!.filename
-                    
-                    let url: String = "http://" + serverHost + "/videos/" + String(pId) + "-" + format + "-" + filename
-                    
-                    print("handlePlayer() playing video " + url + " at serverTime=" + String(serverTime) + ", duration=" + String(video!.duration))
-                 
-                    let media = VLCMedia(url: URL(string: url)!)
-                    player.media = media
-                    
-                    player.play()
-                    if (muted) {
-                        print("Muting audio")
-                        player.audio.volume = 0
-                    } else {
-                        print("Not muted")
-                        player.audio.volume = 100
-                    }
-                    player.time = VLCTime(int: Int32(serverTime + 1000))
-                    
-                    // must wait 2.5 before trying to catch up
-                    diffSyncWait = CACurrentMediaTime() + 2.5
-                } else if (action == "progress") {
-                    let currentTime = player.time
-                    //let totalTime = player.media.length
-                    
-                    let clientTime = Int(currentTime!.intValue)
-                    let cDiff = serverTime - clientTime
-                    
-                    let now = CACurrentMediaTime()
-                    let minDiff: Int = 0
-                    let maxDiff: Int = 100
-                    
-                    if (now >= diffSyncWait) {
-                        let count = diffQueue.count
-                        diffQueue.append(cDiff)
-                        if (diffQueue.count > 9) {
-                            diffQueue.removeFirst()
-                        }
-                        
-                        var aDiff = cDiff
-                        if (count > 0) {
-                            aDiff = diffQueue.reduce(0, +) / count
-                        }
-                        
-                        if (aDiff <= minDiff || aDiff >= maxDiff) {
-                            if (cDiff < minDiff) {
-                                // slow player
-                                let base: Int = min(-cDiff + minDiff, 1000 + minDiff)
-                                let quotient: Int = 1000 + minDiff
-                                playbackSpeed = 1.0 - (Float(base) / Float(quotient) * 0.25)
-                                print("handlePlayer() out of sync, client is ahead, setting playbackSpeed=" + String(playbackSpeed))
-                            } else if (cDiff > maxDiff) {
-                                // increase
-                                let base: Int = min(cDiff + maxDiff, 1000 + maxDiff)
-                                let quotient: Int = 1000 + maxDiff
-                                playbackSpeed = 1.0 + (Float(base) / Float(quotient) * 0.25)
-                                print("handlePlayer() out of sync, server is ahead, setting playbackSpeed=" + String(playbackSpeed))
-                            }
-                            
-                            player.rate = playbackSpeed
-                        } else {
-                            if (playbackSpeed != 1.0) {
-                                playbackSpeed = 1.0;
-                                player.rate = playbackSpeed
-                            }
-                        }
-                        
-                        print("handlePlayer() clientTime=" + String(clientTime) + ", serverTime=" + String(serverTime) + ", cDiff=" + String(cDiff) + ", aDiff=" + String(aDiff))
-                    }
-                    
-                } else if (action == "seek") {
-                    diffSyncWait = CACurrentMediaTime() + 2.5
-                    player.time = VLCTime(int: Int32(serverTime + 500))
-                    diffQueue = []
-                } else if (action == "play") {
-                    player.play()
-                }
-            } else {
-                // pause video
-                player.pause()
-            }
-            
+            actionPlayerData(playerData: playerMessage.player)
         } catch {
             print(error)
+        }
+    }
+    
+    func actionPlayerData(playerData: PlayerData) {
+        status = playerData.status
+        let action = playerData.action
+        let pId = playerData.videoId
+        let serverTime = Int(round(playerData.time * 1000)) + serverLatency
+        
+        if (currentVideo == nil || currentVideo?.id != playerData.videoId) {
+            // change video
+            let video = getVideoById(id: pId)
+            if (video == nil) {
+                return
+            }
+            currentVideo = video
+            setScale()
+            
+            var format: String
+            var maxSupportedHeight: Int
+            if (videoQuality == "4K") {
+                maxSupportedHeight = 2160
+            } else if (videoQuality == "1440p") {
+                maxSupportedHeight = 1440
+            } else if (videoQuality == "1080p") {
+                maxSupportedHeight = 1080
+            } else {
+                maxSupportedHeight = 720
+            }
+            
+            let height = video!.height
+            if (height >= 2160 && maxSupportedHeight > 1440) {
+                format = "4K"
+            } else if (height >= 1440 && maxSupportedHeight > 1080) {
+                format = "1440p"
+            } else if (height >= 1080 && maxSupportedHeight > 720) {
+                format = "1080p"
+            } else {
+                format = "720p"
+            }
+            
+            let filename = video!.filename
+            
+            let url: String = "http://" + serverHost + "/videos/" + String(pId) + "-" + format + "-" + filename
+            
+            print("handlePlayer() playing video " + url + " at serverTime=" + String(serverTime) + ", duration=" + String(video!.duration))
+         
+            let media = VLCMedia(url: URL(string: url)!)
+            player.media = media
+            
+            print("Seeking to \(serverTime)")
+            play()
+            player.time = VLCTime(int: Int32(serverTime + 1000))
+            
+            if (status != Status.PLAYING.rawValue) {
+                // load first frame
+                isLoadingFirstFrame = true
+            }
+            
+            // must wait 2.5 before trying to catch up
+            diffSyncWait = CACurrentMediaTime() + 2.5
+        }
+        
+        if (status == Status.PLAYING.rawValue) {
+            if (action == "progress") {
+                let currentTime = player.time
+                
+                let clientTime = Int(currentTime!.intValue)
+                let cDiff = serverTime - clientTime
+                
+                let now = CACurrentMediaTime()
+                let minDiff: Int = 0
+                let maxDiff: Int = 100
+                
+                if (now >= diffSyncWait) {
+                    let count = diffQueue.count
+                    diffQueue.append(cDiff)
+                    if (diffQueue.count > 9) {
+                        diffQueue.removeFirst()
+                    }
+                    
+                    var aDiff = cDiff
+                    if (count > 0) {
+                        aDiff = diffQueue.reduce(0, +) / count
+                    }
+                    
+                    if (aDiff <= minDiff || aDiff >= maxDiff) {
+                        if (cDiff < minDiff) {
+                            // slow player
+                            let base: Int = min(-cDiff + minDiff, 1000 + minDiff)
+                            let quotient: Int = 1000 + minDiff
+                            playbackSpeed = 1.0 - (Float(base) / Float(quotient) * 0.25)
+                            print("handlePlayer() out of sync, client is ahead, setting playbackSpeed=" + String(playbackSpeed))
+                        } else if (cDiff > maxDiff) {
+                            // increase
+                            let base: Int = min(cDiff + maxDiff, 1000 + maxDiff)
+                            let quotient: Int = 1000 + maxDiff
+                            playbackSpeed = 1.0 + (Float(base) / Float(quotient) * 0.25)
+                            print("handlePlayer() out of sync, server is ahead, setting playbackSpeed=" + String(playbackSpeed))
+                        }
+                        
+                        player.rate = playbackSpeed
+                    } else {
+                        if (playbackSpeed != 1.0) {
+                            playbackSpeed = 1.0;
+                            player.rate = playbackSpeed
+                        }
+                    }
+                    
+                    print("handlePlayer() clientTime=" + String(clientTime) + ", serverTime=" + String(serverTime) + ", cDiff=" + String(cDiff) + ", aDiff=" + String(aDiff))
+                }
+                
+            } else if (action == "seek") {
+                diffSyncWait = CACurrentMediaTime() + 2.5
+                player.time = VLCTime(int: Int32(serverTime + 500))
+                diffQueue = []
+            } else if (action == "play") {
+                play()
+            }
+        } else if ((status == Status.STOPPED.rawValue || status == Status.PAUSED.rawValue) && !isLoadingFirstFrame) {
+            // pause video
+            print("handlePlayer() Pausing video")
+            player.pause()
+        }
+    }
+    
+    func onTimeChanged() {
+        // if the server has a paused video we want vlc to render the first frame
+        // the isLoadingFirstFrame bool allows us to wait for the player to present a frame before we pause
+        if (isLoadingFirstFrame) {
+            isLoadingFirstFrame = false
+            if (status != Status.PLAYING.rawValue) {
+                player.pause()
+            }
         }
     }
 }
@@ -366,6 +399,7 @@ struct InitMessage: Codable {
 struct InitData: Codable {
     let connected: Bool
     let videos: [VideoData]
+    let player: PlayerData
 }
 
 struct VideoData: Codable {

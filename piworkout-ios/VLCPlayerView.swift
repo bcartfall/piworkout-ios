@@ -22,7 +22,7 @@ struct VLCPlayerView: UIViewRepresentable {
     }
 }
 
-class PlayerUIView: UIView, VLCMediaPlayerDelegate, URLSessionDelegate {
+class PlayerUIView: UIView, URLSessionDelegate {
     private var playerController: VLCPLayerController
     
     init(frame: CGRect, playerController: VLCPLayerController) {
@@ -36,8 +36,10 @@ class PlayerUIView: UIView, VLCMediaPlayerDelegate, URLSessionDelegate {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
+}
+
+extension PlayerUIView: VLCMediaPlayerDelegate {
+    func mediaPlayerTimeChanged(_ aNotification: Notification!) {
+        playerController.onTimeChanged()
     }
 }
