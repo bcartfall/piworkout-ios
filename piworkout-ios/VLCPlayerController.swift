@@ -32,7 +32,7 @@ class VLCPLayerController: ObservableObject {
     private var diffSyncWait: Double = 0
     private var playbackSpeed: Float = 1
     private var diffQueue: [Int] = []
-    public var isLoadingFirstFrame = false
+    public var firstFrame = 0
     private var status: Int = -1
 
     init() {
@@ -297,7 +297,7 @@ class VLCPLayerController: ObservableObject {
             
             if (status != Status.PLAYING.rawValue) {
                 // load first frame
-                isLoadingFirstFrame = true
+                firstFrame = 1
             }
             
             // must wait 2.5 before trying to catch up
@@ -360,7 +360,12 @@ class VLCPLayerController: ObservableObject {
             } else if (action == "play") {
                 play()
             }
-        } else if ((status == Status.STOPPED.rawValue || status == Status.PAUSED.rawValue) && !isLoadingFirstFrame) {
+        } else if (action == "seek") {
+            print("handlePlayer() Seeking")
+            play()
+            player.time = VLCTime(int: Int32(serverTime + 0))
+            firstFrame = 1
+        } else if ((status == Status.STOPPED.rawValue || status == Status.PAUSED.rawValue) && firstFrame == 0) {
             // pause video
             print("handlePlayer() Pausing video")
             player.pause()
@@ -369,12 +374,15 @@ class VLCPLayerController: ObservableObject {
     
     func onTimeChanged() {
         // if the server has a paused video we want vlc to render the first frame
-        // the isLoadingFirstFrame bool allows us to wait for the player to present a frame before we pause
-        if (isLoadingFirstFrame) {
-            isLoadingFirstFrame = false
+        // the firstFrame allows us to wait for the player to present a frame before we pause
+        if (firstFrame > 5) {
+            firstFrame = 0
             if (status != Status.PLAYING.rawValue) {
+                print("First frame has been rendered. Pausing.")
                 player.pause()
             }
+        } else {
+            firstFrame += 1
         }
     }
 }

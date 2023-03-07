@@ -42,4 +42,6 @@ extension PlayerUIView: VLCMediaPlayerDelegate {
     func mediaPlayerTimeChanged(_ aNotification: Notification!) {
         playerController.onTimeChanged()
     }
+    
+    
 }
