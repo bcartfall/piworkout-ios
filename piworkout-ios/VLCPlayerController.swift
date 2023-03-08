@@ -25,6 +25,7 @@ class VLCPLayerController: ObservableObject {
     
     /// Variables to manage playback and videos from server
     private var webSocket: URLSessionWebSocketTask?
+    private var session: URLSession?
     private var videos: [VideoData] = []
     private var pingStart: Double = 0
     private var serverLatency: Int = 0
@@ -55,9 +56,10 @@ class VLCPLayerController: ObservableObject {
     func setup() {
         print("Setup")
         if (connected) {
+            self.openWebSocket()
             return
         }
-                
+                 
         _observer = NotificationCenter.default.addObserver(forName: UIDevice.orientationDidChangeNotification, object: nil, queue: nil) { [unowned self] note in
             guard let device = note.object as? UIDevice else {
                 return
@@ -113,10 +115,12 @@ class VLCPLayerController: ObservableObject {
     /// free resources
     func release() {
         print("release")
-        currentVideo = nil
-        connected = false
-        player.stop()
-        webSocket?.suspend()
+        //currentVideo = nil
+        //connected = false
+        player.pause()
+        session?.invalidateAndCancel()
+        webSocket?.cancel()
+        
         webSocket = nil
     }
 
@@ -129,16 +133,16 @@ class VLCPLayerController: ObservableObject {
         let urlString = "ws://" + serverHost + "/backend"
         if let url = URL(string: urlString) {
             let request = URLRequest(url: url)
-            let session = URLSession(configuration: .default, delegate: nil, delegateQueue: nil)
-            let webSocket = session.webSocketTask(with: request)
+            self.session = URLSession(configuration: .default, delegate: nil, delegateQueue: nil)
+            let webSocket = self.session!.webSocketTask(with: request)
             self.webSocket = webSocket
             webSocket.resume()
             connected = true
             
-            let timer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) { [weak self] timer in
-                self?.sendPing()
-            }
-            timer.fire()
+            //let timer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) { [weak self] timer in
+            //    self?.sendPing()
+            //}
+            //timer.fire()
             
             receiveMessage()
         }
@@ -146,10 +150,13 @@ class VLCPLayerController: ObservableObject {
     
     func receiveMessage() {
         webSocket?.receive(completionHandler: { [weak self] result in
-            
             switch result {
             case .failure(let error):
-                print(error.localizedDescription)
+                print("websocket failure: " + error.localizedDescription)
+                self!.connected = false
+                self?.player.pause()
+                self?.webSocket?.cancel()
+                self?.webSocket = nil
             case .success(let message):
                 switch message {
                 case .string(let messageString):
@@ -160,7 +167,10 @@ class VLCPLayerController: ObservableObject {
                     print("Unknown type received from WebSocket")
                 }
             }
-            self?.receiveMessage()
+            
+            if (self!.connected) {
+                self?.receiveMessage()
+            }
         })
     }
     
@@ -287,7 +297,7 @@ class VLCPLayerController: ObservableObject {
             let url: String = "http://" + serverHost + "/videos/" + String(pId) + "-" + format + "-" + filename
             
             print("handlePlayer() playing video " + url + " at serverTime=" + String(serverTime) + ", duration=" + String(video!.duration))
-         
+            
             let media = VLCMedia(url: URL(string: url)!)
             player.media = media
             
@@ -306,6 +316,9 @@ class VLCPLayerController: ObservableObject {
         
         if (status == Status.PLAYING.rawValue) {
             if (action == "progress") {
+                if (!player.isPlaying) {
+                    play()
+                }
                 let currentTime = player.time
                 
                 let clientTime = Int(currentTime!.intValue)
@@ -327,18 +340,29 @@ class VLCPLayerController: ObservableObject {
                         aDiff = diffQueue.reduce(0, +) / count
                     }
                     
+                    if (abs(cDiff) > 10000) {
+                        // diff is too large
+                        print("Seeking to catch up \(serverTime)")
+                        player.time = VLCTime(int: Int32(serverTime + 1000))
+                        diffSyncWait = CACurrentMediaTime() + 2.5
+                    }
+                    
                     if (aDiff <= minDiff || aDiff >= maxDiff) {
+                        var amount: Float = 0.25
+                        if (abs(cDiff) > 1000) {
+                            amount = 0.75
+                        }
                         if (cDiff < minDiff) {
                             // slow player
                             let base: Int = min(-cDiff + minDiff, 1000 + minDiff)
                             let quotient: Int = 1000 + minDiff
-                            playbackSpeed = 1.0 - (Float(base) / Float(quotient) * 0.25)
+                            playbackSpeed = 1.0 - (Float(base) / Float(quotient) * amount)
                             print("handlePlayer() out of sync, client is ahead, setting playbackSpeed=" + String(playbackSpeed))
                         } else if (cDiff > maxDiff) {
                             // increase
                             let base: Int = min(cDiff + maxDiff, 1000 + maxDiff)
                             let quotient: Int = 1000 + maxDiff
-                            playbackSpeed = 1.0 + (Float(base) / Float(quotient) * 0.25)
+                            playbackSpeed = 1.0 + (Float(base) / Float(quotient) * amount)
                             print("handlePlayer() out of sync, server is ahead, setting playbackSpeed=" + String(playbackSpeed))
                         }
                         
