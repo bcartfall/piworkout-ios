@@ -15,6 +15,7 @@ class VLCPLayerController: ObservableObject {
     @AppStorage("serverHost") private var serverHost = ""
     @AppStorage("muted") private var muted = true
     @AppStorage("videoQuality") private var videoQuality = "4K"
+    @AppStorage("ssl") private var ssl = true
     
     let player: VLCMediaPlayer = VLCMediaPlayer() // options: ["--vvv"]
     enum Orientation {
@@ -127,7 +128,7 @@ class VLCPLayerController: ObservableObject {
         if (serverHost == "") {
             return
         }
-        let urlString = "ws://" + serverHost + "/backend"
+        let urlString = (ssl ? "wss:" : "ws:") + "//" + serverHost + "/backend"
         if let url = URL(string: urlString) {
             let request = URLRequest(url: url)
             self.session = URLSession(configuration: .default, delegate: uiView, delegateQueue: nil)
@@ -291,7 +292,7 @@ class VLCPLayerController: ObservableObject {
             
             let filename = video!.filename
             
-            let url: String = "http://" + serverHost + "/videos/" + String(pId) + "-" + format + "-" + filename
+            let url: String = (ssl ? "https:" : "http:") + "//" + serverHost + "/videos/" + String(pId) + "-" + format + "-" + filename
             
             print("handlePlayer() playing video " + url + " at serverTime=" + String(serverTime) + ", duration=" + String(video!.duration))
             

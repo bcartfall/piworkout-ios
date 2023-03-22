@@ -12,6 +12,7 @@ struct SettingsView: View {
     @AppStorage("serverHost") private var serverHost = ""
     @AppStorage("muted") private var muted = true
     @AppStorage("videoQuality") private var videoQuality = "4K"
+    @AppStorage("ssl") private var ssl = true
     
     let qualities = ["4K", "1440p", "1080p", "720p"]
 
@@ -21,6 +22,9 @@ struct SettingsView: View {
                 TextField("Server Host", text: $serverHost)
                     .keyboardType(.URL)
                     .textContentType(.URL)
+                Toggle(isOn: $ssl) {
+                    Text("SSL")
+                }
             }
             Section(header: Text("Player Settings")) {
                 Picker("Video Quality", selection: $videoQuality) {
