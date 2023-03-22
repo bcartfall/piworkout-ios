@@ -22,15 +22,18 @@ struct VLCPlayerView: UIViewRepresentable {
     }
 }
 
-class PlayerUIView: UIView, URLSessionDelegate {
+class PlayerUIView: UIView {
     private var playerController: VLCPLayerController
     
     init(frame: CGRect, playerController: VLCPLayerController) {
         self.playerController = playerController
         super.init(frame: frame)
         
+        self.playerController.uiView = self
         self.playerController.player.delegate = self
         self.playerController.player.drawable = self
+        
+        self.playerController.setup()
     }
     
     required init?(coder: NSCoder) {
@@ -38,10 +41,18 @@ class PlayerUIView: UIView, URLSessionDelegate {
     }
 }
 
-extension PlayerUIView: VLCMediaPlayerDelegate {
+extension PlayerUIView: VLCMediaPlayerDelegate, URLSessionDelegate {
     func mediaPlayerTimeChanged(_ aNotification: Notification!) {
         playerController.onTimeChanged()
     }
     
-    
+    // to ignore ssl errors
+    /*
+    public func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        // Trust the certificate even if not valid
+        let urlCredential = URLCredential(trust: challenge.protectionSpace.serverTrust!)
+
+        completionHandler(.useCredential, urlCredential)
+    }
+     */
 }

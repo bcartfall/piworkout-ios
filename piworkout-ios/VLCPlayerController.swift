@@ -15,13 +15,15 @@ class VLCPLayerController: ObservableObject {
     @AppStorage("serverHost") private var serverHost = ""
     @AppStorage("muted") private var muted = true
     @AppStorage("videoQuality") private var videoQuality = "4K"
-    let player: VLCMediaPlayer = VLCMediaPlayer()
+    
+    let player: VLCMediaPlayer = VLCMediaPlayer() // options: ["--vvv"]
     enum Orientation {
         case portrait
         case landscape
     }
     private var orientation: Orientation
     private var _observer: NSObjectProtocol?
+    public var uiView: PlayerUIView? = nil
     
     /// Variables to manage playback and videos from server
     private var webSocket: URLSessionWebSocketTask?
@@ -45,8 +47,6 @@ class VLCPLayerController: ObservableObject {
         } else {
             orientation = .portrait
         }
-        
-        setup()
     }
     
     required init?(coder: NSCoder) {
@@ -55,12 +55,8 @@ class VLCPLayerController: ObservableObject {
     
     func setup() {
         print("Setup")
-        if (connected) {
-            self.openWebSocket()
-            return
-        }
                  
-        _observer = NotificationCenter.default.addObserver(forName: UIDevice.orientationDidChangeNotification, object: nil, queue: nil) { [unowned self] note in
+        /*_observer = NotificationCenter.default.addObserver(forName: UIDevice.orientationDidChangeNotification, object: nil, queue: nil) { [unowned self] note in
             guard let device = note.object as? UIDevice else {
                 return
             }
@@ -70,7 +66,7 @@ class VLCPLayerController: ObservableObject {
                 self.orientation = .landscape
             }
             self.setScale()
-        }
+        }*/ // orientation no longer affects scale
                         
         // open websocket
         self.openWebSocket()
@@ -83,12 +79,13 @@ class VLCPLayerController: ObservableObject {
     }
     
     func play() {
+        //print("play()")
         player.play()
         if (muted) {
-            print("Muting audio")
+            //print("Muting audio")
             player.audio.volume = 0
         } else {
-            print("Not muted")
+            //print("Not muted")
             player.audio.volume = 100
         }
     }
@@ -133,7 +130,7 @@ class VLCPLayerController: ObservableObject {
         let urlString = "ws://" + serverHost + "/backend"
         if let url = URL(string: urlString) {
             let request = URLRequest(url: url)
-            self.session = URLSession(configuration: .default, delegate: nil, delegateQueue: nil)
+            self.session = URLSession(configuration: .default, delegate: uiView, delegateQueue: nil)
             let webSocket = self.session!.webSocketTask(with: request)
             self.webSocket = webSocket
             webSocket.resume()
